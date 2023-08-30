@@ -16,6 +16,8 @@ Page {
     property string ttitle
     property string discussion
     property bool deleted
+    property bool dead
+    property int counter
     
 
     
@@ -46,14 +48,16 @@ Page {
             xhr2.onreadystatechange = function() {
                 if (xhr2.readyState === XMLHttpRequest.DONE) {
                     var data2 = JSON.parse(xhr2.responseText);
-
                 if(data2 !== undefined && data2 !== "" && kidid){
               var  kids2 = data2.kids
                data2.deleted !== undefined && data2.deleted ? deleted = true :  deleted = false
+                    data2.dead !== undefined && data2.dead ? dead = true :  dead = false
                      kids2 && kids2 !== undefined ?  kidsl = kids2.length : kidsl =0
-
+               if(dead || deleted)   {
+                          counter+=1;
+                    }
 list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent: data2.parent, cid: data2.id, time: data2.time, kids: kidsl, deleted: deleted});
-                    
+
               if (kids2 !== undefined && kids2 !== 0){                
                     for (var j = 0; j<=kids2.length;j++){                     
                         getcomments(kids2[j], ind +1);                     
@@ -63,23 +67,24 @@ list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent:
             }  
         }
             xhr2.send();       
+        
     }
 
     function sortcomments(){ 
 
-            for(var i = 0; i < list.count; i++){
+            for(var i = 0; i < list.model.count; i++){
         
-            if(list.model.get(i).parent != storyid){
+            if(list.model.get(i).parent !== storyid){
             
-                for (var j=0;j<i;j++){
+                for (var j=0;j<=i;j++){
                     if(list.model.get(j).cid == list.model.get(i).parent){
 
                     for(var k=0;k<list.model.get(j).kids;k++){
 
-                    if(list.model.get(j+k+1).parent !==  list.model.get(i).parent){
-                        list.model.move(i,j+k +1,1);
+                 if(list.model.get(j+k+1).parent !==  list.model.get(i).parent){
+                        list.model.move(i,j +k+1,1);
 
-                      //  break;
+                        break;
                     }
                     }
                 } 
@@ -103,9 +108,12 @@ list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent:
         
         ViewPlaceholder {
             id: vplaceholder
-            enabled: list.model.count < descendants
+            enabled: list.model.count < descendants + counter 
             text: "Loading..."
-        onEnabledChanged: sortcomments()
+        onEnabledChanged: {
+                 sortcomments()
+            //    sortcomments()
+            }
             }
 
         model: ListModel { id: commodel}
