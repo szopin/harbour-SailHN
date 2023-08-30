@@ -79,7 +79,7 @@ list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent:
                     if(list.model.get(j+k+1).parent !==  list.model.get(i).parent){
                         list.model.move(i,j+k +1,1);
 
-                        break;
+                      //  break;
                     }
                     }
                 } 
