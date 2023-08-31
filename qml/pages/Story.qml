@@ -57,7 +57,7 @@ Page {
                           counter+=1;
                         console.log(counter)
                     }
-                    console.log(xhr2.responseText)
+                //    console.log(xhr2.responseText)
 list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent: data2.parent, cid: data2.id, time: data2.time, kids: kidsl, deleted: deleted});
 
               if (kids2 !== undefined && kids2 !== 0){                
