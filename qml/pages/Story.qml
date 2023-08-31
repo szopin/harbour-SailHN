@@ -17,7 +17,7 @@ Page {
     property string discussion
     property bool deleted
     property bool dead
-    property int counter
+    property int counter: 0
     
 
     
@@ -55,7 +55,9 @@ Page {
                      kids2 && kids2 !== undefined ?  kidsl = kids2.length : kidsl =0
                if(dead || deleted)   {
                           counter+=1;
+                        console.log(counter)
                     }
+                    console.log(xhr2.responseText)
 list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent: data2.parent, cid: data2.id, time: data2.time, kids: kidsl, deleted: deleted});
 
               if (kids2 !== undefined && kids2 !== 0){                
@@ -79,14 +81,14 @@ list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent:
                 for (var j=0;j<=i;j++){
                     if(list.model.get(j).cid == list.model.get(i).parent){
 
-                    for(var k=0;k<list.model.get(j).kids;k++){
+         //         for(var k=0;k<=list.model.get(j).kids;k++){
 
-                 if(list.model.get(j+k+1).parent !==  list.model.get(i).parent){
-                        list.model.move(i,j +k+1,1);
+        //         if(list.model.get(j+k+1).parent !==  list.model.get(i).parent){
+                        list.model.move(i,j +1,1);
 
                         break;
-                    }
-                    }
+     //               }
+     //               }
                 } 
                 }
             }
@@ -112,7 +114,7 @@ list.model.append({comment: data2.text, indent: ind, nickname: data2.by, parent:
             text: "Loading..."
         onEnabledChanged: {
                  sortcomments()
-            //    sortcomments()
+                sortcomments()
             }
             }
 
